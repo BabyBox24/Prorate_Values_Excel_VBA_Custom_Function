@@ -1,0 +1,25 @@
+Function ProrateValues(rng As Range, valueToProrate As Double, Optional direction As Variant = "vertical") As Variant
+    Dim total As Double
+    Dim result() As Variant
+    Dim i As Long
+    
+    total = Application.WorksheetFunction.Sum(rng)
+    
+    If direction = "vertical" Or direction = 1 Then
+        ReDim result(1 To rng.Rows.Count, 1 To rng.Columns.Count)
+        For i = 1 To rng.Rows.Count
+            result(i, 1) = (rng.Cells(i, 1).Value / total) * valueToProrate
+        Next i
+    ElseIf direction = "horizontal" Or direction = 2 Then
+        ReDim result(1 To rng.Rows.Count, 1 To rng.Columns.Count)
+        For i = 1 To rng.Columns.Count
+            result(1, i) = (rng.Cells(1, i).Value / total) * valueToProrate
+        Next i
+    Else
+        ProrateValues = CVErr(xlErrValue)
+        Exit Function
+    End If
+    
+    ProrateValues = result
+End Function
+
